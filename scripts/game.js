@@ -49,14 +49,15 @@ function Card(type, value, x, y, sprite) {
     this.sprite = sprite;
 }
 
-var spade1;
-
 var spades = [];
 var diamonds = [];
 var clubs = [];
 var hearts = [];
 
+var stack = [];
+
 function create() {
+    // First, we'll create the cards, assign a sprite to each, and set position.
     for (let index = 1; index < 14; index++) {
         spades[index - 1] = new Card("spade", index, 50 * index, 100,
             this.add.sprite(10, 10, "card-spades-" + index.toString()));
@@ -77,24 +78,27 @@ function create() {
             this.add.sprite(10, 10, "card-hearts-" + index.toString()));
         hearts[index - 1].sprite.setPosition(hearts[index - 1].x, hearts[index - 1].y);
     }
+
     for (const index in spades) {
-        spades[index].sprite.setInteractive(new Phaser.Geom.Rectangle(0, 0,
-            spades[index].sprite.width, spades[index].sprite.height),
-            Phaser.Geom.Rectangle.Contains);
+        stack.push(spades[index]);
     }
+
     for (const index in diamonds) {
-        diamonds[index].sprite.setInteractive(new Phaser.Geom.Rectangle(0, 0,
-            diamonds[index].sprite.width, diamonds[index].sprite.height),
-            Phaser.Geom.Rectangle.Contains);
+        stack.push(diamonds[index]);
     }
+
     for (const index in clubs) {
-        clubs[index].sprite.setInteractive(new Phaser.Geom.Rectangle(0, 0,
-            clubs[index].sprite.width, clubs[index].sprite.height),
-            Phaser.Geom.Rectangle.Contains);
+        stack.push(clubs[index]);
     }
+
     for (const index in hearts) {
-        hearts[index].sprite.setInteractive(new Phaser.Geom.Rectangle(0, 0,
-            hearts[index].sprite.width, hearts[index].sprite.height),
+        stack.push(hearts[index]);
+    }
+
+    // Then, we add interactivity to each card.
+    for (const index in stack) {
+        stack[index].sprite.setInteractive(new Phaser.Geom.Rectangle(0, 0,
+            stack[index].sprite.width, stack[index].sprite.height),
             Phaser.Geom.Rectangle.Contains);
     }
 
@@ -105,10 +109,22 @@ function create() {
     this.input.on("gameobjectout", function(pointer, gameObject) {
         gameObject.clearTint();
     })
+
+
 }
 
 function update() {
-    /* for (let index = 1; index < 14; index++) {
+    // Refresh position for all cards
+    for (let index = 1; index < 14; index++) {
         spades[index - 1].sprite.setPosition(spades[index - 1].x, spades[index - 1].y);
-    } */
+    }
+    for (let index = 1; index < 14; index++) {
+        diamonds[index - 1].sprite.setPosition(diamonds[index - 1].x, diamonds[index - 1].y);
+    }
+    for (let index = 1; index < 14; index++) {
+        clubs[index - 1].sprite.setPosition(clubs[index - 1].x, clubs[index - 1].y);
+    }
+    for (let index = 1; index < 14; index++) {
+        hearts[index - 1].sprite.setPosition(hearts[index - 1].x, hearts[index - 1].y);
+    }
 }

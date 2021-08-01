@@ -2,6 +2,7 @@
 
 var config = {
     type: Phaser.AUTO,
+    parent: "game",
     width: 800,
     height: 600,
     physics: {
@@ -53,11 +54,14 @@ var spades = [];
 var diamonds = [];
 var clubs = [];
 var hearts = [];
+var blank;
 
 var stack = [];
 
 function create() {
     // First, we'll create the cards, assign a sprite to each, and set position.
+    blank = new Card("back", 0, 600, 500, this.add.sprite(600, 500, "card-back"));
+
     for (let index = 1; index < 14; index++) {
         spades[index - 1] = new Card("spade", index, 50 * index, 100,
             this.add.sprite(10, 10, "card-spades-" + index.toString()));
@@ -102,6 +106,9 @@ function create() {
             Phaser.Geom.Rectangle.Contains);
     }
 
+    blank.sprite.setInteractive(new Phaser.Geom.Rectangle(0, 0,
+        blank.sprite.width, blank.sprite.height), Phaser.Geom.Rectangle.Contains);
+
     this.input.on("gameobjectover", function(pointer, gameObject) {
         gameObject.setTint(0x7878ff);
     })
@@ -115,16 +122,7 @@ function create() {
 
 function update() {
     // Refresh position for all cards
-    for (let index = 1; index < 14; index++) {
-        spades[index - 1].sprite.setPosition(spades[index - 1].x, spades[index - 1].y);
-    }
-    for (let index = 1; index < 14; index++) {
-        diamonds[index - 1].sprite.setPosition(diamonds[index - 1].x, diamonds[index - 1].y);
-    }
-    for (let index = 1; index < 14; index++) {
-        clubs[index - 1].sprite.setPosition(clubs[index - 1].x, clubs[index - 1].y);
-    }
-    for (let index = 1; index < 14; index++) {
-        hearts[index - 1].sprite.setPosition(hearts[index - 1].x, hearts[index - 1].y);
+    for (const index in stack) {
+        stack[index].sprite.setPosition(stack[index].x, stack[index].y);
     }
 }

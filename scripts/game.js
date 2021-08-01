@@ -57,31 +57,39 @@ var hearts = [];
 var blank;
 
 var stack = [];
+var center = {
+    x: config.width / 2,
+    y: config.height / 2
+}
+
+var stash = {
+    x: center.x / 2,
+    y: center.y
+}
 
 function create() {
     // First, we'll create the cards, assign a sprite to each, and set position.
-    blank = new Card("back", 0, 600, 500, this.add.sprite(600, 500, "card-back"));
-
     for (let index = 1; index < 14; index++) {
-        spades[index - 1] = new Card("spade", index, 50 * index, 100,
+        spades[index - 1] = new Card("spade", index, stash.x, stash.y,
             this.add.sprite(10, 10, "card-spades-" + index.toString()));
         spades[index - 1].sprite.setPosition(spades[index - 1].x, spades[index - 1].y);
     }
     for (let index = 1; index < 14; index++) {
-        diamonds[index - 1] = new Card("diamond", index, 50 * index, 200,
+        diamonds[index - 1] = new Card("diamond", index, stash.x, stash.y,
             this.add.sprite(10, 10, "card-diamonds-" + index.toString()));
         diamonds[index - 1].sprite.setPosition(diamonds[index - 1].x, diamonds[index - 1].y);
     }
     for (let index = 1; index < 14; index++) {
-        clubs[index - 1] = new Card("club", index, 50 * index, 300,
+        clubs[index - 1] = new Card("club", index, stash.x, stash.y,
             this.add.sprite(10, 10, "card-clubs-" + index.toString()));
         clubs[index - 1].sprite.setPosition(clubs[index - 1].x, clubs[index - 1].y);
     }
     for (let index = 1; index < 14; index++) {
-        hearts[index - 1] = new Card("heart", index, 50 * index, 400,
+        hearts[index - 1] = new Card("heart", index, stash.x, stash.y,
             this.add.sprite(10, 10, "card-hearts-" + index.toString()));
         hearts[index - 1].sprite.setPosition(hearts[index - 1].x, hearts[index - 1].y);
     }
+    blank = new Card("back", 0, stash.x, stash.y, this.add.sprite(stash.x, stash.y, "card-back"));
 
     for (const index in spades) {
         stack.push(spades[index]);

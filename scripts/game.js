@@ -60,12 +60,26 @@ var stack = [];
 var center = {
     x: config.width / 2,
     y: config.height / 2
-}
+};
 
 var stash = {
-    x: center.x / 2,
+    x: center.x / 4,
     y: center.y
-}
+};
+
+var player = {
+    x: center.x,
+    y: center.y * 3 / 4,
+    total: 0,
+    hand: []
+};
+
+var opponent = {
+    x: center.x,
+    y: center.y / 4,
+    total: 0,
+    hand: []
+};
 
 function create() {
     // First, we'll create the cards, assign a sprite to each, and set position.
@@ -132,5 +146,24 @@ function update() {
     // Refresh position for all cards
     for (const index in stack) {
         stack[index].sprite.setPosition(stack[index].x, stack[index].y);
+    }
+    if (player.hand.length > 0) {
+        for (const index in player.hand) {
+            player.hand[index].sprite.setPosition(player.hand[index].x, player.hand[index].y);
+        }
+    }
+    if (opponent.hand.length > 0) {
+        for (const index in opponent) {
+            opponent.hand[index].sprite.setPosition(opponent.hand[index].x, opponent.hand[index].y);
+        }
+    }
+}
+
+function dealCard(activePlayer) {
+    let index = Math.round(Math.random() * 52);
+    let dealtCard = stash.splice(index, 1);
+    for (const card in dealtCard) {
+        activePlayer.hand.push(dealtCard[card]);
+        activePlayer.total += dealtCard[card].value;
     }
 }
